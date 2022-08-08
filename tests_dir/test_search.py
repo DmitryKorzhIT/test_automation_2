@@ -37,7 +37,7 @@ def test_1():
                 item_url = check_pages_elastic_search_return['item_url']
                 serial_number += 1
 
-                error_page_info = f'{serial_number}.,"{search_query}","{item_title},"{item_url}"\n'
+                error_page_info = f'{serial_number}.,"{search_query}","{item_title}","{item_url}"\n'
                 file.write(error_page_info)
 
     file.close()

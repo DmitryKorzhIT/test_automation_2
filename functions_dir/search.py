@@ -53,7 +53,11 @@ class Search(Base):
                         'item_title':item_title,
                         'item_url':item_url}
 
-        return {'no_error':True,
-                'item_title':'no title',
-                'item_url':'no url'}
+        # return {'no_error':True,
+        #         'item_title':'no title',
+        #         'item_url':'no url'}
+
+        return {'no_error': False,
+                'item_title': 'Title, of the,., page',
+                'item_url': 'https://teamdanmark.dk/Team/jpijj'}
 

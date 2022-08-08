@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 import time
+import os.path
 
 
 BASE_URL = const.BASE_URL
@@ -27,31 +28,39 @@ class Search(Base):
         autosuggestion__list = self.find_element()
 
 
-    def check_pages_elastic_search(self):
+    def check_pages_elastic_search(self, file_name: str, search_query: str):
         ''' Check all the pages in the results of the elastic search on the 404 error. '''
+
+        flag = True
 
         autosuggestion_list = self.find_element(By.CSS_SELECTOR, 'ul.autosuggestion__list')
         autosuggestion_list_results = autosuggestion_list.find_elements(By.CSS_SELECTOR, 'a.autosuggestion__list-link')
         autosuggestion_list_results = autosuggestion_list_results[:-1]  # The last element was the search button.
 
-        for item in autosuggestion_list_results:
+        for page in autosuggestion_list_results:
 
             # Get the name of the page.
-            item_title = item.find_element(By.CLASS_NAME, 'autosuggestion__list-title').text
-            item_title = item_title.split('\n')[1]
+            page_title = page.find_element(By.CLASS_NAME, 'autosuggestion__list-title').text
+            page_title = page_title.split('\n')[1]
 
             # Get the URL of the page.
-            item_url = item.get_attribute('href')
+            page_url = page.get_attribute('href')
 
             # Check the page on the 404 error.
-            item.click()
+            page.click()
             time.sleep(5)
             if Base.is_404_error(self) == True:
-                return {'no_error':False,
-                        'item_title':item_title,
-                        'item_url':item_url}
+                flag = False
+                self.check_pages_elastic_search_report(file_name, search_query,
+                                                       page_title, page_url)
 
-        return {'no_error':True,
-                'item_title':'no title',
-                'item_url':'no url'}
+        return flag
+
+
+    def check_pages_elastic_search_report(self, file_name, search_query, page_title, page_url):
+        ''' Write the data about the error page in the report file. '''
+
+        with open(os.path.dirname(__file__) + f'/../reports/{file_name}', 'a') as file:
+            file.write(f'"{search_query}","{page_title}","{page_url}"\n')
+
 

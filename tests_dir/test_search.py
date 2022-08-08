@@ -5,42 +5,37 @@ from functions_dir.search import Search
 
 
 def test_1():
-    # List of the search queries to test.
-    search_queries = ['Denmark', 'forbund']
-
-    # Open the report file.
-    current_date_time = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-    file_name = f'elastic_search_error_404_{current_date_time}'
-    file = open(os.path.dirname(__file__) + f'/../reports/{file_name}.csv', 'a')
+    ''' Check all the pages in the results of the elastic search on the 404 error. '''
 
     flag_global = True
-    serial_number = 0
 
-    # Start a loop to check each web page's link.
+    # List of the search queries to test.
+    search_queries = ['Denmark', 'fsf32', 'TALENTKLASSER']
+
+    # Create the report file.
+    current_date_time = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    file_name = f'elastic_search_error_404_{current_date_time}.csv'
+    file = open(os.path.dirname(__file__) + f'/../reports/{file_name}', 'w')
+    file.close()
+
+    # Start a loop to check each search query.
     for search_query in search_queries:
         search = Search()
         search.load_first_page()
-
         try:
             search.accept_cookies()
+
+        except:
+            pass
 
         finally:
             search.press_search_btn()
             search.search_field(search_request=search_query)
-            check_pages_elastic_search_return = search.check_pages_elastic_search()
-            flag_local = check_pages_elastic_search_return['no_error']
+            flag_local = search.check_pages_elastic_search(file_name=file_name,
+                                                           search_query=search_query)
 
             # If the page has the 404 error.
-            if not flag_local:
+            if flag_local == False:
                 flag_global = False  # at least one test hasn't been passed
-                item_title = check_pages_elastic_search_return['item_title']
-                item_url = check_pages_elastic_search_return['item_url']
-                serial_number += 1
-
-                error_page_info = f'{serial_number}.,"{search_query}","{item_title}","{item_url}"\n'
-                file.write(error_page_info)
-
-    file.close()
-
 
     assert flag_global

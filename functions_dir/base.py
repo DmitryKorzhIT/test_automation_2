@@ -5,7 +5,6 @@ from selenium.webdriver.common.by import By
 
 
 BASE_URL = const.BASE_URL
-PASSWORD = const.PASSWORD
 
 
 class Base(webdriver.Chrome):
@@ -21,4 +20,28 @@ class Base(webdriver.Chrome):
             self.quit()
 
 
+    def load_first_page(self):
+        self.get(BASE_URL)
 
+
+    def accept_cookies(self):
+        cookies_btns = self.find_element(By.CLASS_NAME, 'coi-button-group')
+        accept_cookies_btn = cookies_btns.find_element(By.CSS_SELECTOR,
+            'button[onclick="CookieInformation.submitAllCategories()"]')
+        accept_cookies_btn.click()
+
+
+    def is_404_error(self):
+        try:
+            self.implicitly_wait(0)
+            error_element = self.find_element(By.CLASS_NAME, 'page-not-found__title._show-tablet')
+            error_element = error_element.find_element(By.CLASS_NAME, 'page-not-found__title-text')
+            error_text = error_element.get_attribute('innerHTML').strip()
+            if str(error_text) == '404':
+                return True
+
+        except:
+            return False
+
+        finally:
+            self.implicitly_wait(15)

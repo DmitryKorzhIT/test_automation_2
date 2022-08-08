@@ -35,8 +35,6 @@ class Search(Base):
         autosuggestion_list_results = autosuggestion_list_results[:-1]  # The last element was the search button.
 
         for item in autosuggestion_list_results:
-            # Make 404 error.
-            print('item:', item)
 
             # Get the name of the page.
             item_title = item.find_element(By.CLASS_NAME, 'autosuggestion__list-title').text
@@ -53,11 +51,7 @@ class Search(Base):
                         'item_title':item_title,
                         'item_url':item_url}
 
-        # return {'no_error':True,
-        #         'item_title':'no title',
-        #         'item_url':'no url'}
-
-        return {'no_error': False,
-                'item_title': 'Title, of the,., page',
-                'item_url': 'https://teamdanmark.dk/Team/jpijj'}
+        return {'no_error':True,
+                'item_title':'no title',
+                'item_url':'no url'}
 

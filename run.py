@@ -1,39 +1,35 @@
-import os.path
-import datetime
+# This file is for developer. You don't have to use it.
+
 from functions_dir.search import Search
+import time
 
-def search_tst():
-    ''' Check all the pages in the results of the elastic search on the 404 error. '''
 
-    flag_global = True
+search_queries = ['de']
 
-    # List of the search queries to test.
-    search_queries = ['Talent', 'Denmark', 'Danmark', 'Sport']
+search = Search()
+file_name = search.create_report_file(test_name='search_error_404')
 
-    # Create the report file.
-    current_date_time = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-    file_name = f'elastic_search_error_404_{current_date_time}.csv'
-    file = open(os.path.dirname(__file__) + f'/reports/{file_name}', 'w')
-    file.close()
+for search_query in search_queries:
+    search = Search()
 
-    # Start a loop to check each search query.
-    for search_query in search_queries:
-        search = Search()
-        search.load_first_page()
-        try:
-            search.accept_cookies()
+    search.load_first_page()
+    search.accept_cookies()
+    search.press_search_btn()
+    search.search_field(search_request=search_query)
+    search.press_search_btn_2()
+    pages_links_list = search.check_pages_search()  # return list of all the links in the search result.
+    pages_links_list[1] = 'https://teamdanmark.dk/j83jr'
+    pages_links_list[3] = 'https://teamdanmark.dk/j2390'
+    pages_links_list[4] = 'https://teamdanmark.dk/j83jr'
+    pages_links_list[7] = 'https://teamdanmark.dk/j2390'
 
-        except:
-            pass
-
-        finally:
-            search.press_search_btn()
-            search.search_field(search_request=search_query)
-            flag_local = search.check_pages_elastic_search(file_name=file_name,
-                                                           search_query=search_query)
-
-            # If the page has the 404 error.
-            if flag_local == False:
-                flag_global = False  # at least one test hasn't been passed
-
-search_tst()
+    i = 0
+    for page in pages_links_list:
+        i += 1
+        search.get(page)
+        if search.is_404_error() == True:
+            flag = False
+            search.check_pages_elasticsearch_report(file_name=file_name,
+                                                    search_query=search_query,
+                                                    page_title='-',
+                                                    page_url=page)

@@ -1,5 +1,5 @@
 from . import constant as const
-from .base import Base
+from functions_dir.elasticsearch import Elasticsearch
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
@@ -9,59 +9,26 @@ import os.path
 
 BASE_URL = const.BASE_URL
 
+class Search(Elasticsearch):
+    def press_search_btn_2(self):
+        ''' Press the search button in the header after enter a search request. '''
 
-class Search(Base):
-    def press_search_btn(self):
-        header = self.find_element(By.CLASS_NAME, 'header__wrap')
-        search_btn = header.find_element(By.CLASS_NAME, 'search__btn')
+        header_element = self.find_element(By.CLASS_NAME, 'header__inner')
+        search_btn = header_element.find_element(By.CLASS_NAME,
+            'autosuggestion__entry-btn.js-autosuggestion__entry-btn')
+
         search_btn.click()
 
 
-    def search_field(self, search_request: str = 'Denmark'):
-        header = self.find_element(By.CLASS_NAME, 'header__wrap')
-        search_field = header.find_element(By.CSS_SELECTOR, 'input[title="search"]')
-        search_field.clear()
-        search_field.send_keys(search_request)
+    def check_pages_search(self):
+        ''' Check each page in a search results on 404 error. '''
 
+        pages_links_list = []
+        search_result = self.find_element(By.CLASS_NAME, 'content.search-result')
+        search_pages = search_result.find_elements(By.CSS_SELECTOR, 'a.search-result__list-link')
 
-    def click_on_autosuggestion_element(self):
-        autosuggestion__list = self.find_element()
+        for page in search_pages:
+            pages_links_list.append(page.get_attribute('href'))
 
-
-    def check_pages_elastic_search(self, file_name: str, search_query: str):
-        ''' Check all the pages in the results of the elastic search on the 404 error. '''
-
-        flag = True
-
-        autosuggestion_list = self.find_element(By.CSS_SELECTOR, 'ul.autosuggestion__list')
-        autosuggestion_list_results = autosuggestion_list.find_elements(By.CSS_SELECTOR, 'a.autosuggestion__list-link')
-        autosuggestion_list_results = autosuggestion_list_results[:-1]  # The last element was the search button.
-
-        for page in autosuggestion_list_results:
-
-            # Get the name of the page.
-            page_title = page.find_element(By.CLASS_NAME, 'autosuggestion__list-title').text
-            page_title = page_title.split('\n')[1]
-
-            # Get the URL of the page.
-            page_url = page.get_attribute('href')
-
-            # Check the page on the 404 error.
-            page.click()
-            time.sleep(5)
-            # self.get(page_url)
-            if Base.is_404_error(self) == True:
-                flag = False
-                self.check_pages_elastic_search_report(file_name, search_query,
-                                                       page_title, page_url)
-
-        return flag
-
-
-    def check_pages_elastic_search_report(self, file_name, search_query, page_title, page_url):
-        ''' Write the data about the error page in the report file. '''
-
-        with open(os.path.dirname(__file__) + f'/../reports/{file_name}', 'a') as file:
-            file.write(f'"{search_query}","{page_title}","{page_url}"\n')
-
+        return pages_links_list
 

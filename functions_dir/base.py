@@ -2,6 +2,8 @@ from . import constant as const
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
+import os
+import datetime
 
 
 BASE_URL = const.BASE_URL
@@ -11,8 +13,8 @@ class Base(webdriver.Chrome):
     def __init__(self, teardown=False):  # the teardown is a condition for the __exit__ method
         self.teardown = teardown
         options = webdriver.ChromeOptions()
-        options.add_argument('headless')  # Run code without opening a browser
-        super(Base, self).__init__()  #__init__(options=options) - for running without opening a browser
+        options.add_argument('headless')  # run code without opening a browser
+        super(Base, self).__init__(options=options)  #__init__(options=options) - for running without opening a browser
         self.implicitly_wait(15)
         self.maximize_window()
 
@@ -47,3 +49,11 @@ class Base(webdriver.Chrome):
 
         finally:
             self.implicitly_wait(15)
+
+
+    def create_report_file(self, test_name: str):
+        current_date_time = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        file_name = f'{test_name}_{current_date_time}.csv'
+        file = open(os.path.dirname(__file__) + f'/../reports/{file_name}', 'w')
+        file.close()
+        return file_name

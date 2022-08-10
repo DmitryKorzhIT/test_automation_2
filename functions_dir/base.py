@@ -10,7 +10,9 @@ BASE_URL = const.BASE_URL
 class Base(webdriver.Chrome):
     def __init__(self, teardown=False):  # the teardown is a condition for the __exit__ method
         self.teardown = teardown
-        super(Base, self).__init__()
+        options = webdriver.ChromeOptions()
+        options.add_argument('headless')  # Run code without opening a browser
+        super(Base, self).__init__()  #__init__(options=options) - for running without opening a browser
         self.implicitly_wait(15)
         self.maximize_window()
 

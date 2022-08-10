@@ -49,6 +49,7 @@ class Search(Base):
             # Check the page on the 404 error.
             page.click()
             time.sleep(5)
+            # self.get(page_url)
             if Base.is_404_error(self) == True:
                 flag = False
                 self.check_pages_elastic_search_report(file_name, search_query,

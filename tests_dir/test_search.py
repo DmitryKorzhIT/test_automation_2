@@ -10,7 +10,7 @@ def test_1():
     flag_global = True
 
     # List of the search queries to test.
-    search_queries = ['Denmark', 'fsf32', 'TALENTKLASSER']
+    search_queries = ['Denmark']
 
     # Create the report file.
     current_date_time = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
@@ -20,22 +20,18 @@ def test_1():
 
     # Start a loop to check each search query.
     for search_query in search_queries:
+
         search = Search()
         search.load_first_page()
-        try:
-            search.accept_cookies()
+        search.accept_cookies()
+        search.press_search_btn()
+        search.search_field(search_request=search_query)
+        flag_local = search.check_pages_elastic_search(file_name=file_name,
+                                                       search_query=search_query)
 
-        except:
-            pass
+        # If the page has the 404 error.
+        if flag_local == False:
+            flag_global = False  # at least one test hasn't been passed
 
-        finally:
-            search.press_search_btn()
-            search.search_field(search_request=search_query)
-            flag_local = search.check_pages_elastic_search(file_name=file_name,
-                                                           search_query=search_query)
-
-            # If the page has the 404 error.
-            if flag_local == False:
-                flag_global = False  # at least one test hasn't been passed
 
     assert flag_global

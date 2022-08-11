@@ -14,7 +14,7 @@ class Base(webdriver.Chrome):
         self.teardown = teardown
         options = webdriver.ChromeOptions()
         options.add_argument('headless')  # run code without opening a browser
-        super(Base, self).__init__(options=options)  #__init__(options=options) - for running without opening a browser
+        super(Base, self).__init__()  #__init__(options=options) - for running without opening a browser
         self.implicitly_wait(15)
         self.maximize_window()
 
@@ -24,15 +24,18 @@ class Base(webdriver.Chrome):
             self.quit()
 
 
-    def load_first_page(self):
-        self.get(BASE_URL)
+    def load_specific_page(self, url=BASE_URL):
+        self.get(url)
 
 
     def accept_cookies(self):
-        cookies_btns = self.find_element(By.CLASS_NAME, 'coi-button-group')
-        accept_cookies_btn = cookies_btns.find_element(By.CSS_SELECTOR,
-            'button[onclick="CookieInformation.submitAllCategories()"]')
-        accept_cookies_btn.click()
+        try:
+            cookies_btns = self.find_element(By.CLASS_NAME, 'coi-button-group')
+            accept_cookies_btn = cookies_btns.find_element(By.CSS_SELECTOR,
+                'button[onclick="CookieInformation.submitAllCategories()"]')
+            accept_cookies_btn.click()
+        except:
+            pass
 
 
     def is_404_error(self):

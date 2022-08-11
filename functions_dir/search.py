@@ -1,10 +1,6 @@
 from . import constant as const
 from functions_dir.elasticsearch import Elasticsearch
-from selenium import webdriver
-from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
-import time
-import os.path
 
 
 BASE_URL = const.BASE_URL

@@ -1,10 +1,9 @@
 from functions_dir.search import Search
-import time
 
 
 def test_1():
     flag = True
-    search_queries = ['Sport']
+    search_queries = ['de']
 
     # Create a report file.
     search = Search()
@@ -13,7 +12,7 @@ def test_1():
     for search_query in search_queries:
         search = Search()
 
-        search.load_first_page()
+        search.load_specific_page()
         search.accept_cookies()
         search.press_search_btn()
         search.search_field(search_request=search_query)

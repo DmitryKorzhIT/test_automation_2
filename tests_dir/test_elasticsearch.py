@@ -1,5 +1,3 @@
-import os.path
-import datetime
 from functions_dir.elasticsearch import Elasticsearch
 
 
@@ -20,7 +18,7 @@ def test_1():
     for search_query in search_queries:
 
         elasticsearch = Elasticsearch()
-        elasticsearch.load_first_page()
+        elasticsearch.load_specific_page()
         elasticsearch.accept_cookies()
         elasticsearch.press_search_btn()
         elasticsearch.search_field(search_request=search_query)

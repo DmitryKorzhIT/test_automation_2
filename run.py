@@ -12,7 +12,7 @@ file_name = search.create_report_file(test_name='search_error_404')
 for search_query in search_queries:
     search = Search()
 
-    search.load_first_page()
+    search.load_specific_page()
     search.accept_cookies()
     search.press_search_btn()
     search.search_field(search_request=search_query)

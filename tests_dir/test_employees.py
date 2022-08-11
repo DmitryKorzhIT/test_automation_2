@@ -18,7 +18,7 @@ def test_1():
 
 
 def test_2():
-    ''' Check if the title of professions changes after clicking on a profession. '''
+    ''' Check if the title of the professions changes after clicking on a profession. '''
 
     employees = Employees()
 

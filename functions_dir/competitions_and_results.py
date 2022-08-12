@@ -19,6 +19,8 @@ class CompetitionsAndResults(Base):
 
 
     def check_sports_titles(self):
+        ''' Check if the title of the sports changes after clicking on a sport. '''
+
         accordion_element = self.find_element(By.CLASS_NAME, 'foldable.foldable--organizations')
         sports_btns = accordion_element.find_elements(By.CLASS_NAME, 'organization-filter-bottom-item__toggle')
         sports_btns = sports_btns[:-1]  # the last button is "show all".
@@ -38,5 +40,33 @@ class CompetitionsAndResults(Base):
                 return False
 
         return True
+
+
+    def competitions_open_accordion_years(self):
+        accordion_element = self.find_element(By.CLASS_NAME, 'foldable.foldable--years')
+        accordion_btn = accordion_element.find_element(By.CSS_SELECTOR, 'button.foldable-top__toggle')
+        self.execute_script("arguments[0].click();", accordion_btn)  # instead of ".click()" method.
+
+
+    def is_competitions_accordion_years_opened(self):
+        try:
+            self.find_element(By.CLASS_NAME, 'foldable.foldable--opened.foldable--years')
+            return True
+        except:
+            return False
+
+
+    def check_years_titles(self):
+        ''' Check if the year changes after clicking on a year. '''
+
+        self.competitions_open_accordion_years()
+        all_years = self.find_elements(By.CLASS_NAME, 'years-item__btn')
+        self.competitions_open_accordion_years()
+        print('All years len:', len(all_years))
+
+        for year in range(len(all_years)):
+            pass
+
+
 
 

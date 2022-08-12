@@ -57,6 +57,15 @@ def test_4():
     assert flag
 
 
+def test_5():
+    '''  '''
+
+    competitions_and_results = CompetitionsAndResults()
+
+    competitions_and_results.load_specific_page(COMPETITIONS_AND_RESULTS_URL)
+    competitions_and_results.accept_cookies()
+    competitions_and_results.check_competitions_existence()
+
 
 
 

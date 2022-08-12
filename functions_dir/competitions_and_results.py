@@ -68,5 +68,42 @@ class CompetitionsAndResults(Base):
             pass
 
 
+    def check_competitions_existence(self):
+        '''  '''
+
+        accordion_elements = self.find_elements(By.CSS_SELECTOR, 'button.month__toggle')
+
+        for accordion_element in accordion_elements:
+            accordion_element.click()
+            month_element = self.find_element(By.CLASS_NAME, 'month--open')
+
+            month_name = month_element.find_element(By.CLASS_NAME, 'month__name')
+            month_name_text = month_name.text
+
+            competition_row = month_element.find_element(By.CLASS_NAME, 'info__row.row.no-gutters.event-item')
+
+            competition_dates = competition_row.find_element(By.CLASS_NAME, 'col.event-item__date')
+            competition_dates_text = competition_dates.text
+
+            competition_medal = competition_row.find_element(By.CLASS_NAME, 'col.event-item__medal')
+            competition_medal_text = competition_medal.text
+
+            competition_type = competition_row.find_element(By.CLASS_NAME, 'col.event-item__type')
+            competition_type_text = competition_type.text
+
+            competition_type_red = competition_type.find_element(By.CLASS_NAME, 'red')
+            competition_type_red_text = competition_type_red.text
+
+            competition_athletes = competition_row.find_element(By.CLASS_NAME, 'col.event-item__athletes')
+            competition_athletes_text = competition_athletes.text
+
+            print(f'Month_name: {month_name_text}; '
+                  f'Dates: {competition_dates_text}; '
+                  f'Medal: {competition_medal_text}; '
+                  f'Type_red: {competition_type_red_text}; '
+                  f'Type: {competition_type_text}; '
+                  f'Athletes: {competition_athletes_text}.')
+
+            accordion_element.click()
 
 

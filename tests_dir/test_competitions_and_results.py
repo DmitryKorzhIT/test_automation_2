@@ -60,11 +60,13 @@ def test_4():
 def test_5():
     '''  '''
 
+    # Create a report file.
     competitions_and_results = CompetitionsAndResults()
+    file_name = competitions_and_results.create_report_file(test_name='competitions_and_results')
 
     competitions_and_results.load_specific_page(COMPETITIONS_AND_RESULTS_URL)
     competitions_and_results.accept_cookies()
-    competitions_and_results.check_competitions_existence()
+    competitions_and_results.check_each_competition(file_name)
 
 
 

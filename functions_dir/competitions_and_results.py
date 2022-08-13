@@ -1,5 +1,6 @@
 from functions_dir.base import Base
 from selenium.webdriver.common.by import By
+import os
 import time
 
 
@@ -68,7 +69,7 @@ class CompetitionsAndResults(Base):
             pass
 
 
-    def check_competitions_existence(self):
+    def check_each_competition(self, file_name):
         '''  '''
 
         accordion_elements = self.find_elements(By.CSS_SELECTOR, 'button.month__toggle')
@@ -98,13 +99,28 @@ class CompetitionsAndResults(Base):
                 competition_athletes = competition_row.find_element(By.CLASS_NAME, 'col.event-item__athletes')
                 competition_athletes_text = competition_athletes.text
 
-                print(f'Month_name: {month_name_text}; '
-                      f'Dates: {competition_dates_text}; '
-                      f'Medal: {competition_medal_text}; '
-                      f'Type_red: {competition_type_red_text}; '
-                      f'Type: {competition_type_text}; '
-                      f'Athletes: {competition_athletes_text}.')
+                competition_row_text = f'"{month_name_text}",'\
+                                       f'"{competition_dates_text}",'\
+                                       f'"{competition_medal_text}",'\
+                                       f'"{competition_type_red_text}",'\
+                                       f'"{competition_type_text}",'\
+                                       f'"{competition_athletes_text}"\n'
+
+                if (month_name_text == '') or (competition_dates_text == '') or \
+                   (competition_type_text == '') or (competition_type_red_text == ''):
+                    self.competitions_add_to_report(file_name=file_name,
+                                                    competition_row_text=competition_row_text)
+
+                if ((competition_medal_text != '') and (competition_athletes_text == '')) or \
+                   ((competition_medal_text == '') and (competition_athletes_text != '')):
+                    self.competitions_add_to_report(file_name=file_name,
+                                                    competition_row_text=competition_row_text)
 
             accordion_element.click()
 
 
+    def competitions_add_to_report(self, file_name, competition_row_text):
+        ''' Write the row with the error in the report file. '''
+
+        with open(os.path.dirname(__file__) + f'/../reports/{file_name}', 'a') as file:
+            file.write(competition_row_text)

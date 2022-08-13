@@ -58,15 +58,30 @@ class CompetitionsAndResults(Base):
 
 
     def check_years_titles(self):
-        ''' Check if the year changes after clicking on a year. '''
+        ''' Check each year is it changes after clicking. '''
 
         self.competitions_open_accordion_years()
-        all_years = self.find_elements(By.CLASS_NAME, 'years-item__btn')
+        years_block = self.find_element(By.CLASS_NAME, 'years-wrapper')
+        all_years = years_block.find_elements(By.CLASS_NAME, 'years-item__btn')
+        year_title = self.find_element(By.CLASS_NAME, 'years-label__label')
         self.competitions_open_accordion_years()
-        print('All years len:', len(all_years))
 
-        for year in range(len(all_years)):
-            pass
+        for year_item in range(len(all_years)):
+            self.competitions_open_accordion_years()
+            years_block = self.find_element(By.CLASS_NAME, 'years-wrapper')
+            years_elements = years_block.find_elements(By.CLASS_NAME, 'years-item__btn')
+            years_elements_text = years_elements[year_item].text.strip()
+
+            self.execute_script("arguments[0].click();", years_elements[year_item])  # instead of ".click()" method.
+
+            year_title_text = year_title.text.strip()
+
+            if year_title_text != years_elements_text:
+                return False
+
+        return True
+
+
 
 
     def check_each_competition(self, file_name):

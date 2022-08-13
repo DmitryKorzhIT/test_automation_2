@@ -45,20 +45,21 @@ def test_3():
 
 
 def test_4():
-    ''' Check if the year changes after clicking on a year. '''
+    ''' Check each year is it changes after clicking. '''
 
     competitions_and_results = CompetitionsAndResults()
 
     competitions_and_results.load_specific_page(COMPETITIONS_AND_RESULTS_URL)
     competitions_and_results.accept_cookies()
     flag = competitions_and_results.check_years_titles()
-    time.sleep(20)
 
     assert flag
 
 
 def test_5():
-    '''  '''
+    ''' In each sport category in each year in each month in each row this function checks:
+    1. Existence of data.
+    2. If the medal exists, then should be at least one person. '''
 
     # Create a report file.
     competitions_and_results = CompetitionsAndResults()

@@ -70,13 +70,13 @@ class CompetitionsAndResults(Base):
             self.competitions_open_accordion_years()
             years_block = self.find_element(By.CLASS_NAME, 'years-wrapper')
             years_elements = years_block.find_elements(By.CLASS_NAME, 'years-item__btn')
-            years_elements_text = years_elements[year_item].text.strip()
+            year_element_text = years_elements[year_item].text.strip()
 
             self.execute_script("arguments[0].click();", years_elements[year_item])  # instead of ".click()" method.
 
             year_title_text = year_title.text.strip()
 
-            if year_title_text != years_elements_text:
+            if year_title_text != year_element_text:
                 return False
 
         return True
@@ -85,53 +85,63 @@ class CompetitionsAndResults(Base):
 
 
     def check_each_competition(self, file_name):
-        '''  '''
+        ''' In particular sport category, in particular year, in each month, and in each row this function checks:
+        1. Existence of data.
+        2. If the medal exists, then should be at least one person. '''
 
+        time.sleep(2)  # wait for loading data
+
+        self.implicitly_wait(0)
         accordion_elements = self.find_elements(By.CSS_SELECTOR, 'button.month__toggle')
+        self.implicitly_wait(15)
 
-        for accordion_element in accordion_elements:
-            accordion_element.click()
-            month_element = self.find_element(By.CLASS_NAME, 'month--open')
+        if len(accordion_elements) >= 1:
+            for accordion_element in accordion_elements:
+                self.execute_script("arguments[0].click();", accordion_element)  # instead of ".click()" method.
+                month_element = self.find_element(By.CLASS_NAME, 'month--open')
 
-            competitions_list = month_element.find_elements(By.CLASS_NAME, 'info__row.row.no-gutters.event-item')
+                competitions_list = month_element.find_elements(By.CLASS_NAME, 'info__row.row.no-gutters.event-item')
 
-            for competition_row in competitions_list:
-                month_name = month_element.find_element(By.CLASS_NAME, 'month__name')
-                month_name_text = month_name.text
+                for competition_row in competitions_list:
+                    month_name = month_element.find_element(By.CLASS_NAME, 'month__name')
+                    month_name_text = month_name.text
 
-                competition_dates = competition_row.find_element(By.CLASS_NAME, 'col.event-item__date')
-                competition_dates_text = competition_dates.text
+                    competition_dates = competition_row.find_element(By.CLASS_NAME, 'col.event-item__date')
+                    competition_dates_text = competition_dates.text
 
-                competition_medal = competition_row.find_element(By.CLASS_NAME, 'col.event-item__medal')
-                competition_medal_text = competition_medal.text
+                    competition_medal = competition_row.find_element(By.CLASS_NAME, 'col.event-item__medal')
+                    competition_medal_text = competition_medal.text
 
-                competition_type = competition_row.find_element(By.CLASS_NAME, 'col.event-item__type')
-                competition_type_text = competition_type.text
+                    competition_type = competition_row.find_element(By.CLASS_NAME, 'col.event-item__type')
+                    competition_type_text = competition_type.text
 
-                competition_type_red = competition_type.find_element(By.CLASS_NAME, 'red')
-                competition_type_red_text = competition_type_red.text
+                    competition_type_red = competition_type.find_element(By.CLASS_NAME, 'red')
+                    competition_type_red_text = competition_type_red.text
 
-                competition_athletes = competition_row.find_element(By.CLASS_NAME, 'col.event-item__athletes')
-                competition_athletes_text = competition_athletes.text
+                    competition_athletes = competition_row.find_element(By.CLASS_NAME, 'col.event-item__athletes')
+                    competition_athletes_text = competition_athletes.text
 
-                competition_row_text = f'"{month_name_text}",'\
-                                       f'"{competition_dates_text}",'\
-                                       f'"{competition_medal_text}",'\
-                                       f'"{competition_type_red_text}",'\
-                                       f'"{competition_type_text}",'\
-                                       f'"{competition_athletes_text}"\n'
+                    competition_row_text = f'"{month_name_text}",'\
+                                           f'"{competition_dates_text}",'\
+                                           f'"{competition_medal_text}",'\
+                                           f'"{competition_type_red_text}",'\
+                                           f'"{competition_type_text}",'\
+                                           f'"{competition_athletes_text}"\n'
 
-                if (month_name_text == '') or (competition_dates_text == '') or \
-                   (competition_type_text == '') or (competition_type_red_text == ''):
-                    self.competitions_add_to_report(file_name=file_name,
-                                                    competition_row_text=competition_row_text)
+                    if (month_name_text == '') or (competition_dates_text == '') or \
+                       (competition_type_text == '') or (competition_type_red_text == ''):
+                        self.competitions_add_to_report(file_name=file_name,
+                                                        competition_row_text=competition_row_text)
 
-                if ((competition_medal_text != '') and (competition_athletes_text == '')) or \
-                   ((competition_medal_text == '') and (competition_athletes_text != '')):
-                    self.competitions_add_to_report(file_name=file_name,
-                                                    competition_row_text=competition_row_text)
+                    if ((competition_medal_text == '') and (competition_athletes_text == '')) or \
+                       ((competition_medal_text == '') and (competition_athletes_text != '')):
+                        self.competitions_add_to_report(file_name=file_name,
+                                                        competition_row_text=competition_row_text)
 
-            accordion_element.click()
+                self.execute_script("arguments[0].click();", accordion_element)  # instead of ".click()" method.
+
+        else:
+            return
 
 
     def competitions_add_to_report(self, file_name, competition_row_text):
@@ -139,3 +149,44 @@ class CompetitionsAndResults(Base):
 
         with open(os.path.dirname(__file__) + f'/../reports/{file_name}', 'a') as file:
             file.write(competition_row_text)
+
+
+    def amount_of_sports_titles(self):
+        self.competitions_open_accordion_sports()
+        sports_btns = self.find_elements(By.CLASS_NAME, 'organization-filter-bottom-item__toggle')
+        len_sports = len(sports_btns) - 1
+
+        return len_sports
+
+
+    def amount_of_years_titles(self):
+        self.competitions_open_accordion_years()
+        years_btns = self.find_elements(By.CLASS_NAME, 'years-item__btn')
+        len_years = len(years_btns)
+        self.competitions_open_accordion_years()
+
+        return len_years
+
+
+    def choose_sport(self, sport_number):
+        sports_btns = self.find_elements(By.CLASS_NAME, 'organization-filter-bottom-item__toggle')
+        self.execute_script("arguments[0].click();", sports_btns[sport_number])  # instead of ".click()" method.
+
+        if sport_number >= 1:
+            self.execute_script("arguments[0].click();", sports_btns[sport_number-1])  # instead of ".click()" method.
+
+
+    def choose_year(self, year_number):
+        # Open accordion with years.
+        years_block = self.find_element(By.CLASS_NAME, 'foldable.foldable--years')
+        accordion_btn = years_block.find_element(By.CSS_SELECTOR, 'button.foldable-top__toggle')
+        self.execute_script("arguments[0].click();", accordion_btn)  # instead of ".click()" method.
+
+        years_btns = self.find_elements(By.CLASS_NAME, 'years-item__btn')
+        self.execute_script("arguments[0].click();", years_btns[year_number])  # instead of ".click()" method.
+
+
+
+
+
+

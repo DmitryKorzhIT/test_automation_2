@@ -18,7 +18,7 @@ def test_1():
 
 
 def test_2():
-    ''' Check if the title of the sports changes after clicking on a sport. '''
+    ''' Check if the titles of the sport change after clicking on a sport. '''
 
     competitions_and_results = CompetitionsAndResults()
 
@@ -39,7 +39,6 @@ def test_3():
     competitions_and_results.accept_cookies()
     competitions_and_results.competitions_open_accordion_years()
     flag = competitions_and_results.is_competitions_accordion_years_opened()
-    time.sleep(20)
 
     assert flag
 
@@ -57,7 +56,7 @@ def test_4():
 
 
 def test_5():
-    ''' In each sport category in each year in each month in each row this function checks:
+    ''' In each sport category, in each year, in each month, and in each row this function checks:
     1. Existence of data.
     2. If the medal exists, then should be at least one person. '''
 
@@ -67,7 +66,19 @@ def test_5():
 
     competitions_and_results.load_specific_page(COMPETITIONS_AND_RESULTS_URL)
     competitions_and_results.accept_cookies()
-    competitions_and_results.check_each_competition(file_name)
+
+    # Figure out how many sports and years categories.
+    len_sports = competitions_and_results.amount_of_sports_titles()
+    len_years = competitions_and_results.amount_of_years_titles()
+
+    # Go through all sports.
+    for sport in range(len_sports):
+        competitions_and_results.choose_sport(sport_number=sport)
+
+        # Go through all years.
+        for year in range(len_years):
+            competitions_and_results.choose_year(year_number=year)
+            competitions_and_results.check_each_competition(file_name)  # go through all competitions.
 
 
 

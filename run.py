@@ -1,35 +1,32 @@
-# This file is for developer. You don't have to use it.
-
-from functions_dir.search import Search
+from functions_dir.competitions_and_results import CompetitionsAndResults
+from functions_dir.constant import COMPETITIONS_AND_RESULTS_URL
 import time
 
 
-search_queries = ['de']
+COMPETITIONS_AND_RESULTS_URL = COMPETITIONS_AND_RESULTS_URL
 
-search = Search()
-file_name = search.create_report_file(test_name='search_error_404')
+''' In each sport category in each year in each month in each row this function checks:
+1. Existence of data.
+2. If the medal exists, then should be at least one person. '''
 
-for search_query in search_queries:
-    search = Search()
+# Create a report file.
+competitions_and_results = CompetitionsAndResults()
+file_name = competitions_and_results.create_report_file(test_name='competitions_and_results')
 
-    search.load_specific_page()
-    search.accept_cookies()
-    search.press_search_btn()
-    search.search_field(search_request=search_query)
-    search.press_search_btn_2()
-    pages_links_list = search.check_pages_search()  # return list of all the links in the search result.
-    pages_links_list[1] = 'https://teamdanmark.dk/j83jr'
-    pages_links_list[3] = 'https://teamdanmark.dk/j2390'
-    pages_links_list[4] = 'https://teamdanmark.dk/j83jr'
-    pages_links_list[7] = 'https://teamdanmark.dk/j2390'
+competitions_and_results.load_specific_page(COMPETITIONS_AND_RESULTS_URL)
+competitions_and_results.accept_cookies()
 
-    i = 0
-    for page in pages_links_list:
-        i += 1
-        search.get(page)
-        if search.is_404_error() == True:
-            flag = False
-            search.check_pages_elasticsearch_report(file_name=file_name,
-                                                    search_query=search_query,
-                                                    page_title='-',
-                                                    page_url=page)
+# Figure out how many sports and years categories
+len_sports = competitions_and_results.amount_of_sports_titles()
+len_years = competitions_and_results.amount_of_years_titles()
+
+# Go through all sports, through all years, through all competitions
+for sport in range(len_sports):
+    competitions_and_results.choose_sport(sport_number=sport)
+    time.sleep(0.5)
+    for year in range(len_years):
+        competitions_and_results.choose_year(year_number=year)
+        time.sleep(0.3)
+        print('000.')
+        competitions_and_results.check_each_competition(file_name)
+        print('004.')

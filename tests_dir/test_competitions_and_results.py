@@ -62,7 +62,9 @@ def test_5():
 
     # Create a report file.
     competitions_and_results = CompetitionsAndResults()
-    file_name = competitions_and_results.create_report_file(test_name='competitions_and_results')
+    header = f'Sport category,Year,Month,Competition dates,Medal,Type red,Type,Athletes\n'
+
+    file_name = competitions_and_results.create_report_file(test_name='competitions_and_results', header=header)
 
     competitions_and_results.load_specific_page(COMPETITIONS_AND_RESULTS_URL)
     competitions_and_results.accept_cookies()
@@ -73,12 +75,12 @@ def test_5():
 
     # Go through all sports.
     for sport in range(len_sports):
-        competitions_and_results.choose_sport(sport_number=sport)
+        sport_btn_text = competitions_and_results.choose_sport(sport_number=sport)
 
         # Go through all years.
         for year in range(len_years):
-            competitions_and_results.choose_year(year_number=year)
-            competitions_and_results.check_each_competition(file_name)  # go through all competitions.
+            year_btn_text = competitions_and_results.choose_year(year_number=year)
+            competitions_and_results.check_each_competition(file_name, sport_btn_text, year_btn_text)  # go through all competitions.
 
 
 

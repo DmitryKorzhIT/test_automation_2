@@ -84,7 +84,7 @@ class CompetitionsAndResults(Base):
 
 
 
-    def check_each_competition(self, file_name):
+    def check_each_competition(self, file_name, sport_btn_text, year_btn_text):
         ''' In particular sport category, in particular year, in each month, and in each row this function checks:
         1. Existence of data.
         2. If the medal exists, then should be at least one person. '''
@@ -121,7 +121,9 @@ class CompetitionsAndResults(Base):
                     competition_athletes = competition_row.find_element(By.CLASS_NAME, 'col.event-item__athletes')
                     competition_athletes_text = competition_athletes.text
 
-                    competition_row_text = f'"{month_name_text}",'\
+                    competition_row_text = f'"{sport_btn_text}",' \
+                                           f'"{year_btn_text}",' \
+                                           f'"{month_name_text}",'\
                                            f'"{competition_dates_text}",'\
                                            f'"{competition_medal_text}",'\
                                            f'"{competition_type_red_text}",'\
@@ -133,7 +135,7 @@ class CompetitionsAndResults(Base):
                         self.competitions_add_to_report(file_name=file_name,
                                                         competition_row_text=competition_row_text)
 
-                    if ((competition_medal_text == '') and (competition_athletes_text == '')) or \
+                    if ((competition_medal_text != '') and (competition_athletes_text == '')) or \
                        ((competition_medal_text == '') and (competition_athletes_text != '')):
                         self.competitions_add_to_report(file_name=file_name,
                                                         competition_row_text=competition_row_text)
@@ -170,10 +172,13 @@ class CompetitionsAndResults(Base):
 
     def choose_sport(self, sport_number):
         sports_btns = self.find_elements(By.CLASS_NAME, 'organization-filter-bottom-item__toggle')
+        sport_btn_text = sports_btns[sport_number].text
         self.execute_script("arguments[0].click();", sports_btns[sport_number])  # instead of ".click()" method.
 
         if sport_number >= 1:
             self.execute_script("arguments[0].click();", sports_btns[sport_number-1])  # instead of ".click()" method.
+
+        return sport_btn_text
 
 
     def choose_year(self, year_number):
@@ -183,7 +188,10 @@ class CompetitionsAndResults(Base):
         self.execute_script("arguments[0].click();", accordion_btn)  # instead of ".click()" method.
 
         years_btns = self.find_elements(By.CLASS_NAME, 'years-item__btn')
+        year_btn_text = years_btns[year_number].text
         self.execute_script("arguments[0].click();", years_btns[year_number])  # instead of ".click()" method.
+
+        return year_btn_text
 
 
 

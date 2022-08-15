@@ -54,9 +54,10 @@ class Base(webdriver.Chrome):
             self.implicitly_wait(15)
 
 
-    def create_report_file(self, test_name: str):
+    def create_report_file(self, test_name: str, header: str):
         current_date_time = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
         file_name = f'{test_name}_{current_date_time}.csv'
         file = open(os.path.dirname(__file__) + f'/../reports/{file_name}', 'w')
+        file.write(header)
         file.close()
         return file_name

@@ -12,7 +12,8 @@ def test_1():
 
     # Create a report file.
     elasticsearch = Elasticsearch()
-    file_name = elasticsearch.create_report_file(test_name='elasticsearch_error_404')
+    header = 'Search query,Page title,Page url\n'
+    file_name = elasticsearch.create_report_file(test_name='elasticsearch_error_404', header=header)
 
     # Start a loop to check each search query.
     for search_query in search_queries:

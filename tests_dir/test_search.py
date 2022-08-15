@@ -7,7 +7,8 @@ def test_1():
 
     # Create a report file.
     search = Search()
-    file_name = search.create_report_file(test_name='search_error_404')
+    header = 'Search query,Page title,Page url\n'
+    file_name = search.create_report_file(test_name='search_error_404', header=header)
 
     for search_query in search_queries:
         search = Search()
@@ -25,7 +26,7 @@ def test_1():
                 flag = False
                 search.check_pages_elasticsearch_report(file_name=file_name,
                                                         search_query=search_query,
-                                                        page_title='-',
+                                                        page_title='',
                                                         page_url=page)
 
 

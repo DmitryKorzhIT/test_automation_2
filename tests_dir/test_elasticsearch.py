@@ -8,7 +8,7 @@ def test_1():
     flag_global = True
 
     # List of the search queries to test.
-    search_queries = ['Denmark']
+    search_queries = ['de']
 
     # Create a report file.
     elasticsearch = Elasticsearch()

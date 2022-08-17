@@ -60,9 +60,11 @@ def test_5():
     1. Existence of data.
     2. If the medal exists, then should be at least one person. '''
 
+    flag = True
+
     # Create a report file.
     competitions_and_results = CompetitionsAndResults()
-    header = f'Sport category,Year,Month,Competition dates,Medal,Type red,Type,Athletes\n'
+    header = f'Sport category,Year,Month,Competition dates,Medal,Type red,Type,Athletes,Error type\n'
 
     file_name = competitions_and_results.create_report_file(test_name='competitions_and_results', header=header)
 
@@ -80,8 +82,13 @@ def test_5():
         # Go through all years.
         for year in range(len_years):
             year_btn_text = competitions_and_results.choose_year(year_number=year)
-            competitions_and_results.check_each_competition(file_name, sport_btn_text, year_btn_text)  # go through all competitions.
+            flag_local = competitions_and_results.check_each_competition(file_name, sport_btn_text, year_btn_text)  # go
+            # through all competitions.
 
+            if flag_local == False:
+                flag = False
+
+    assert flag
 
 
 

@@ -1,12 +1,11 @@
-from functions_dir.employees import Employees
 from functions_dir import constant as const
-
+from functions_dir.employees import Employees
 
 EMPLOYEES_URL = const.EMPLOYEES_URL
 
 
 def test_1():
-    ''' Check accordion is opened. '''
+    """Check accordion is opened."""
 
     employees = Employees()
 
@@ -19,7 +18,7 @@ def test_1():
 
 
 def test_2():
-    ''' Check if the title of the profession changes after clicking on a profession. '''
+    """Check if the title of the profession changes after clicking on a profession."""
 
     employees = Employees()
 
@@ -32,7 +31,7 @@ def test_2():
 
 
 def test_3():
-    ''' Checking each profession for the presence of at least one employee. '''
+    """Checking each profession for the presence of at least one employee."""
 
     employees = Employees()
 

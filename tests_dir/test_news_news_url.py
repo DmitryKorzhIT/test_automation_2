@@ -1,5 +1,5 @@
-from functions_dir.news_news_url import NewsNewsUrl
 from functions_dir.constant import BASE_URL
+from functions_dir.news_news_url import NewsNewsUrl
 
 
 def test_1():
@@ -28,8 +28,8 @@ def test_3():
     news_news_url = NewsNewsUrl()
 
     # Create a report file.
-    header = f'News number,News date,News title,News link\n'
-    file_name = news_news_url.create_report_file(test_name='news_news_url_check_all_news', header=header)
+    header = "News number,News date,News title,News link\n"
+    file_name = news_news_url.create_report_file(test_name="news_news_url_check_all_news", header=header)
 
     news_news_url.load_specific_page(BASE_URL)
     news_news_url.accept_cookies()
@@ -44,8 +44,8 @@ def test_4():
     news_news_url = NewsNewsUrl()
 
     # Create a report file.
-    header = f'News date,News title,News image\n'
-    file_name = news_news_url.create_report_file(test_name='news_news_url_check_all_news_data', header=header)
+    header = "News date,News title,News image\n"
+    file_name = news_news_url.create_report_file(test_name="news_news_url_check_all_news_data", header=header)
 
     news_news_url.load_specific_page(BASE_URL)
     news_news_url.accept_cookies()

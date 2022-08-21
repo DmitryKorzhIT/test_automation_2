@@ -1,12 +1,11 @@
 from functions_dir.competitions_and_results import CompetitionsAndResults
 from functions_dir.constant import COMPETITIONS_AND_RESULTS_URL
 
-
 COMPETITIONS_AND_RESULTS_URL = COMPETITIONS_AND_RESULTS_URL
 
 
 def test_1():
-    ''' Check is accordion with sports opens. '''
+    """Check is accordion with sports opens."""
 
     competitions_and_results = CompetitionsAndResults()
 
@@ -19,7 +18,7 @@ def test_1():
 
 
 def test_2():
-    ''' Check if the titles of the sport change after clicking on a sport. '''
+    """Check if the titles of the sport change after clicking on a sport."""
 
     competitions_and_results = CompetitionsAndResults()
 
@@ -32,7 +31,7 @@ def test_2():
 
 
 def test_3():
-    ''' Check is accordion with years opens. '''
+    """Check is accordion with years opens."""
 
     competitions_and_results = CompetitionsAndResults()
 
@@ -45,7 +44,7 @@ def test_3():
 
 
 def test_4():
-    ''' Check each year is it changes after clicking. '''
+    """Check each year is it changes after clicking."""
 
     competitions_and_results = CompetitionsAndResults()
 
@@ -57,17 +56,17 @@ def test_4():
 
 
 def test_5():
-    ''' In each sport category, in each year, in each month, and in each row this function checks:
+    """In each sport category, in each year, in each month, and in each row this function checks:
     1. Existence of data.
-    2. If the medal exists, then should be at least one person. '''
+    2. If the medal exists, then should be at least one person."""
 
     flag = True
 
     # Create a report file.
     competitions_and_results = CompetitionsAndResults()
-    header = f'Sport category,Year,Month,Competition dates,Medal,Type red,Type,Athletes,Error type\n'
+    header = "Sport category,Year,Month,Competition dates,Medal,Type red,Type,Athletes,Error type\n"
 
-    file_name = competitions_and_results.create_report_file(test_name='competitions_and_results', header=header)
+    file_name = competitions_and_results.create_report_file(test_name="competitions_and_results", header=header)
 
     competitions_and_results.load_specific_page(COMPETITIONS_AND_RESULTS_URL)
     competitions_and_results.accept_cookies()
@@ -87,20 +86,7 @@ def test_5():
             # Go through all competitions.
             flag_local = competitions_and_results.check_each_competition(file_name, sport_btn_text, year_btn_text)
 
-            if flag_local == False:
+            if flag_local is False:
                 flag = False
 
     assert flag
-
-
-
-
-
-
-
-
-
-
-
-
-

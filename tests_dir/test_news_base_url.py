@@ -1,12 +1,11 @@
-from functions_dir.news_base_url import NewsBaseUrl
 from functions_dir.constant import BASE_URL
-
+from functions_dir.news_base_url import NewsBaseUrl
 
 BASE_URL = BASE_URL
 
 
 def test_1():
-    ''' Check each news from the base page on 404 error, when opening it. '''
+    """Check each news from the base page on 404 error, when opening it."""
 
     news_base_url = NewsBaseUrl()
 
@@ -18,7 +17,7 @@ def test_1():
 
 
 def test_2():
-    ''' Check the image, date, and title in each news. '''
+    """Check the image, date, and title in each news."""
 
     news_base_url = NewsBaseUrl()
 

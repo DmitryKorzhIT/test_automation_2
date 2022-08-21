@@ -6,12 +6,16 @@ import time
 
 class CompetitionsAndResults(Base):
     def competitions_open_accordion_sports(self):
+        ''' Open the accordion with sports. '''
+
         accordion_element = self.find_element(By.CLASS_NAME, 'foldable.foldable--organizations')
         accordion_btn = accordion_element.find_element(By.CSS_SELECTOR, 'button.foldable-top__toggle')
-        self.execute_script("arguments[0].click();", accordion_btn)  # instead of ".click()" method.
+        self.execute_script("arguments[0].click();", accordion_btn)
 
 
     def is_competitions_accordion_sports_opened(self):
+        ''' Check if the accordion with sports opened. '''
+
         try:
             self.find_element(By.CLASS_NAME, 'foldable.foldable--opened.foldable--organizations')
             return True
@@ -30,12 +34,12 @@ class CompetitionsAndResults(Base):
             title_before = accordion_element.find_element(By.CLASS_NAME, 'foldable-top__title')
             title_before_text = title_before.get_attribute('innerHTML')
 
-            self.execute_script("arguments[0].click();", sport_btn)  # instead of ".click()" method.
+            self.execute_script("arguments[0].click();", sport_btn)
 
             title_after = accordion_element.find_element(By.CLASS_NAME, 'foldable-top__title')
             title_after_text = title_after.get_attribute('innerHTML')
 
-            self.execute_script("arguments[0].click();", sport_btn)  # instead of ".click()" method.
+            self.execute_script("arguments[0].click();", sport_btn)
 
             if title_before_text == title_after_text:
                 return False
@@ -44,12 +48,16 @@ class CompetitionsAndResults(Base):
 
 
     def competitions_open_accordion_years(self):
+        ''' Open the accordion with years. '''
+
         accordion_element = self.find_element(By.CLASS_NAME, 'foldable.foldable--years')
         accordion_btn = accordion_element.find_element(By.CSS_SELECTOR, 'button.foldable-top__toggle')
-        self.execute_script("arguments[0].click();", accordion_btn)  # instead of ".click()" method.
+        self.execute_script("arguments[0].click();", accordion_btn)
 
 
     def is_competitions_accordion_years_opened(self):
+        ''' Check if the accordion with years opened '''
+
         try:
             self.find_element(By.CLASS_NAME, 'foldable.foldable--opened.foldable--years')
             return True
@@ -72,7 +80,7 @@ class CompetitionsAndResults(Base):
             years_elements = years_block.find_elements(By.CLASS_NAME, 'years-item__btn')
             year_element_text = years_elements[year_item].text.strip()
 
-            self.execute_script("arguments[0].click();", years_elements[year_item])  # instead of ".click()" method.
+            self.execute_script("arguments[0].click();", years_elements[year_item])
 
             year_title_text = year_title.text.strip()
 
@@ -80,8 +88,6 @@ class CompetitionsAndResults(Base):
                 return False
 
         return True
-
-
 
 
     def check_each_competition(self, file_name, sport_btn_text, year_btn_text):
@@ -99,7 +105,7 @@ class CompetitionsAndResults(Base):
 
             if len(accordion_elements) >= 1:
                 for accordion_element in accordion_elements:
-                    self.execute_script("arguments[0].click();", accordion_element)  # instead of ".click()" method.
+                    self.execute_script("arguments[0].click();", accordion_element)
                     month_element = self.find_element(By.CLASS_NAME, 'month--open')
 
                     competitions_list = month_element.find_elements(By.CLASS_NAME, 'info__row.row.no-gutters.event-item')
@@ -144,7 +150,7 @@ class CompetitionsAndResults(Base):
                                                             competition_row_text=competition_row_text)
                             flag_local = False
 
-                    self.execute_script("arguments[0].click();", accordion_element)  # instead of ".click()" method.
+                    self.execute_script("arguments[0].click();", accordion_element)
                     return flag_local
 
             else:
@@ -186,25 +192,28 @@ class CompetitionsAndResults(Base):
 
 
     def choose_sport(self, sport_number):
+        ''' Click on a sport name. '''
+
         sports_btns = self.find_elements(By.CLASS_NAME, 'organization-filter-bottom-item__toggle')
         sport_btn_text = sports_btns[sport_number].text
-        self.execute_script("arguments[0].click();", sports_btns[sport_number])  # instead of ".click()" method.
+        self.execute_script("arguments[0].click();", sports_btns[sport_number])
 
         if sport_number >= 1:
-            self.execute_script("arguments[0].click();", sports_btns[sport_number-1])  # instead of ".click()" method.
+            self.execute_script("arguments[0].click();", sports_btns[sport_number-1])
 
         return sport_btn_text
 
 
     def choose_year(self, year_number):
-        # Open accordion with years.
+        ''' Click on a year name. '''
+
         years_block = self.find_element(By.CLASS_NAME, 'foldable.foldable--years')
         accordion_btn = years_block.find_element(By.CSS_SELECTOR, 'button.foldable-top__toggle')
-        self.execute_script("arguments[0].click();", accordion_btn)  # instead of ".click()" method.
+        self.execute_script("arguments[0].click();", accordion_btn)
 
         years_btns = self.find_elements(By.CLASS_NAME, 'years-item__btn')
         year_btn_text = years_btns[year_number].text
-        self.execute_script("arguments[0].click();", years_btns[year_number])  # instead of ".click()" method.
+        self.execute_script("arguments[0].click();", years_btns[year_number])
 
         return year_btn_text
 

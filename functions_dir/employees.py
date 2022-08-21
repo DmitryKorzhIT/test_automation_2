@@ -45,9 +45,9 @@ class Employees(Base):
 
 
     def check_existence_of_employees(self):
-        ''' Checking existence of at least one employee in each profession.
-            It returns True, if in each profession at least one employee.
-            It returns False, if in at least in one profession zero employees. '''
+        ''' Checking the existence of at least one employee in each profession.
+            It returns True if in each profession at least one employee.
+            It returns False if in at least one profession zero employees. '''
 
         employees_list_panel = self.find_element(By.CLASS_NAME, 'employees-list-panel-wrapper')
         employees_list_panel = employees_list_panel.find_element(By.CLASS_NAME, 'employees-list-panel.js-tracking-area')

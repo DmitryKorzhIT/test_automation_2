@@ -4,8 +4,9 @@ from functions_dir import constant as const
 
 EMPLOYEES_URL = const.EMPLOYEES_URL
 
+
 def test_1():
-    ''' Check is accordion opens. '''
+    ''' Check accordion is opened. '''
 
     employees = Employees()
 
@@ -18,15 +19,16 @@ def test_1():
 
 
 def test_2():
-    ''' Check if the title of the professions changes after clicking on a profession. '''
+    ''' Check if the title of the profession changes after clicking on a profession. '''
 
     employees = Employees()
 
-    flag = True
     employees.load_specific_page(url=EMPLOYEES_URL)
     employees.accept_cookies()
     employees.open_accordion()
-    assert employees.check_professions_titles()
+    flag = employees.check_professions_titles()
+
+    assert flag
 
 
 def test_3():

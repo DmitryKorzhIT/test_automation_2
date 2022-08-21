@@ -4,6 +4,7 @@ from functions_dir.constant import BASE_URL
 
 BASE_URL = BASE_URL
 
+
 def test_1():
     ''' Check each news from the base page on 404 error, when opening it. '''
 

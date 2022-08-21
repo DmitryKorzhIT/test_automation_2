@@ -1,9 +1,9 @@
 from functions_dir.competitions_and_results import CompetitionsAndResults
 from functions_dir.constant import COMPETITIONS_AND_RESULTS_URL
-import time
 
 
 COMPETITIONS_AND_RESULTS_URL = COMPETITIONS_AND_RESULTS_URL
+
 
 def test_1():
     ''' Check is accordion with sports opens. '''
@@ -14,6 +14,7 @@ def test_1():
     competitions_and_results.accept_cookies()
     competitions_and_results.competitions_open_accordion_sports()
     flag = competitions_and_results.is_competitions_accordion_sports_opened()
+
     assert flag
 
 
@@ -82,8 +83,9 @@ def test_5():
         # Go through all years.
         for year in range(len_years):
             year_btn_text = competitions_and_results.choose_year(year_number=year)
-            flag_local = competitions_and_results.check_each_competition(file_name, sport_btn_text, year_btn_text)  # go
-            # through all competitions.
+
+            # Go through all competitions.
+            flag_local = competitions_and_results.check_each_competition(file_name, sport_btn_text, year_btn_text)
 
             if flag_local == False:
                 flag = False

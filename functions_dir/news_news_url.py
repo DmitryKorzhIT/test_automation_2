@@ -4,7 +4,9 @@ from selenium.webdriver.common.by import By
 import time
 import os
 
+
 BASE_URL = const.BASE_URL
+
 
 class NewsNewsUrl(Base):
     def all_news_btn(self):
@@ -13,6 +15,8 @@ class NewsNewsUrl(Base):
 
 
     def check_main_news(self):
+        ''' Check the main news page on the 404 error. '''
+
         news_title = self.find_element(By.CLASS_NAME, 'top-news__title')
         self.execute_script("arguments[0].click();", news_title)
 
@@ -23,6 +27,8 @@ class NewsNewsUrl(Base):
 
 
     def check_main_news_data(self):
+        ''' Check the main data of the main news. '''
+
         news_image = self.find_element(By.CSS_SELECTOR, 'img.top-news__img')
         news_image = news_image.get_attribute('src')
 
@@ -59,6 +65,8 @@ class NewsNewsUrl(Base):
 
 
     def check_all_news(self, file_name):
+        ''' Check each page in news on the 404 error. '''
+
         all_news_info = []
         local_flag = True
 
@@ -95,6 +103,8 @@ class NewsNewsUrl(Base):
 
 
     def check_all_news_data(self, file_name):
+        ''' Check the main data of all news. '''
+
         self.implicitly_wait(1)
         local_flag = True
 
@@ -122,8 +132,3 @@ class NewsNewsUrl(Base):
 
         self.implicitly_wait(15)
         return local_flag
-
-
-
-
-

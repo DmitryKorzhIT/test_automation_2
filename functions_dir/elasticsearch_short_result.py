@@ -8,7 +8,7 @@ import os.path
 BASE_URL = const.BASE_URL
 
 
-class Elasticsearch(Base):
+class ElasticsearchShortResult(Base):
     def press_search_btn(self):
         header = self.find_element(By.CLASS_NAME, 'header__wrap')
         search_btn = header.find_element(By.CLASS_NAME, 'search__btn')
@@ -16,14 +16,16 @@ class Elasticsearch(Base):
 
 
     def search_field(self, search_request: str = 'Denmark'):
+        ''' Enter the search request into the search field. '''
+
         header = self.find_element(By.CLASS_NAME, 'header__wrap')
         search_field = header.find_element(By.CSS_SELECTOR, 'input[title="search"]')
         search_field.clear()
         search_field.send_keys(search_request)
 
 
-    def check_pages_elastic_search(self, file_name: str, search_query: str):
-        ''' Check all the pages in the results of the elastic search on the 404 error. '''
+    def check_pages_elasticsearch(self, file_name: str, search_query: str):
+        ''' Check all the pages in the results of the short elasticsearch on the 404 error. '''
 
         flag = True
 

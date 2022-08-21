@@ -1,6 +1,5 @@
 from functions_dir.news_news_url import NewsNewsUrl
 from functions_dir.constant import BASE_URL
-import time
 
 
 def test_1():

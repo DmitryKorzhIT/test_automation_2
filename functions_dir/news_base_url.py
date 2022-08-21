@@ -1,9 +1,10 @@
 from . import constant as const
 from functions_dir.base import Base
 from selenium.webdriver.common.by import By
-import time
+
 
 BASE_URL = const.BASE_URL
+
 
 class NewsBaseUrl(Base):
     def click_each_news(self):

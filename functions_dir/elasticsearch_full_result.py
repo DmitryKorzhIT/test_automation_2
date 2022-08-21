@@ -1,11 +1,12 @@
 from . import constant as const
-from functions_dir.elasticsearch import Elasticsearch
+from functions_dir.elasticsearch_short_result import ElasticsearchShortResult
 from selenium.webdriver.common.by import By
 
 
 BASE_URL = const.BASE_URL
 
-class Search(Elasticsearch):
+
+class ElasticsearchFullResult(ElasticsearchShortResult):
     def press_search_btn_2(self):
         ''' Press the search button in the header after enter a search request. '''
 
@@ -17,7 +18,7 @@ class Search(Elasticsearch):
 
 
     def check_pages_search(self):
-        ''' Check each page in a search results on 404 error. '''
+        ''' Check all the pages in the full results of the elasticsearch on the 404 error. '''
 
         pages_links_list = []
         search_result = self.find_element(By.CLASS_NAME, 'content.search-result')

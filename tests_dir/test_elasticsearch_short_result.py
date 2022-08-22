@@ -1,3 +1,11 @@
+import os
+import sys
+
+path = os.getcwd()  # get current directory
+parent_path = os.path.abspath(os.path.join(path, os.pardir))  # prints parent directory
+sys.path.append(parent_path)
+
+
 from functions_dir.elasticsearch_short_result import ElasticsearchShortResult
 
 

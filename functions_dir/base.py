@@ -6,11 +6,13 @@ from selenium.webdriver.common.by import By
 
 from . import constant as const
 
+DRIVER_PATH = const.DRIVER_PATH
 BASE_URL = const.BASE_URL
 
 
 class Base(webdriver.Chrome):
     def __init__(self, teardown=False):  # the teardown is a condition for the __exit__ method
+        self.driver_path = DRIVER_PATH
         self.teardown = teardown
         options = webdriver.ChromeOptions()
         options.add_argument("headless")  # run code without opening a browser

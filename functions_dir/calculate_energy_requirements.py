@@ -1,7 +1,5 @@
 import time
 
-from selenium.webdriver.common.by import By
-
 from functions_dir.base import Base
 
 from . import constant as const
@@ -13,17 +11,25 @@ class CalculateEnergyRequirements(Base):
     def fill_base_metabolism(self):
         self.implicitly_wait(2)
 
-        base_metabolism_fields = self.find_element(By.CLASS_NAME, "main")
-        base_metabolism_fields = base_metabolism_fields.find_element(By.CLASS_NAME, "article-page")
-        base_metabolism_fields = base_metabolism_fields.find_element(By.CLASS_NAME, "umb-grid")
-        base_metabolism_fields = base_metabolism_fields.find_element(By.CLASS_NAME, "grid-section")
-        base_metabolism_fields = base_metabolism_fields.find_element(By.CLASS_NAME, "row.clearfix")
-
         time.sleep(5)
-        element = self.execute_script(
-            """return document.querySelector("td-calculator").shadowRoot.querySelector(".section.section--bmr")"""
+
+        shadow_root_1 = self.execute_script(
+            """return document.querySelector("td-calculator")
+            .shadowRoot.querySelector("iron-pages[attr-for-selected='name']")"""
         )
-        print(element)
+
+        print(shadow_root_1)
+
+        # inner_texts = [my_elem.get_attribute("outerHTML") for my_elem in driver.execute_script(
+        #     """return document.querySelector('game-app').shadowRoot.querySelector('game-row').
+        #     shadowRoot.querySelectorAll('game-tile[letter]')""")]
+        #
+        # "return document.querySelector('downloads-manager').shadowRoot.querySelector('downloads-toolbar#toolbar')" \
+        # ".shadowRoot.querySelector('cr-toolbar#toolbar').shadowRoot.querySelector('cr-toolbar-search-field#search')" \
+        # ".shadowRoot.querySelector('div#searchTerm input#searchInput')"
+
+        # metabolism_weight = metabolism.find_element(By.ID, 'weight')
+        # print(f'Weight: {metabolism_weight}')
 
         # self.get("https://www.immowelt.de/immobilienpreise")
         # time.sleep(5)
